@@ -1,33 +1,35 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Main {
-
     public static void main(String[] args) throws FileNotFoundException {
         File inputFile = new File("src/day1_input.txt");
-        String s = "";
         int sumOfEachElvesCalories = 0, maxCaloriesByAnElf = 0;
-        Scanner scan = new Scanner(inputFile);
-//        //part1
-//        while (scan.hasNext()) {
-//            s = scan.nextLine();
-//            if (!s.isEmpty()) {
-//                sumOfEachElvesCalories = sumOfEachElvesCalories + Integer.valueOf(s);
-//            } else {
-//                maxCaloriesByAnElf = Math.max(maxCaloriesByAnElf, sumOfEachElvesCalories);
-//                sumOfEachElvesCalories = 0;
-//            }
-//        }
-//        System.out.println(sumOfEachElvesCalories);
+        Scanner scanner = new Scanner(inputFile);
+        String s;
 
-        //part 2
-        List<Integer> caloriesList = new ArrayList<>();
-        while (scan.hasNext()) {
-            s = scan.nextLine();
+        //part1: find the max count
+        while (scanner.hasNext()) {
+            s = scanner.nextLine();
             if (!s.isEmpty()) {
-                sumOfEachElvesCalories = sumOfEachElvesCalories + Integer.valueOf(s);
+                sumOfEachElvesCalories += Integer.valueOf(s);
+            } else {
+                maxCaloriesByAnElf = Math.max(maxCaloriesByAnElf, sumOfEachElvesCalories);
+                sumOfEachElvesCalories = 0;
+            }
+        }
+        System.out.println(sumOfEachElvesCalories);
+
+        //part 2: sum the top 3 counts
+        sumOfEachElvesCalories = 0;
+        scanner = new Scanner(inputFile);
+        List<Integer> caloriesList = new ArrayList<>();
+
+        while (scanner.hasNext()) {
+            s = scanner.nextLine();
+            if (!s.isEmpty()) {
+                sumOfEachElvesCalories += Integer.valueOf(s);
             } else {
                 caloriesList.add(sumOfEachElvesCalories);
                 sumOfEachElvesCalories = 0;
@@ -36,7 +38,6 @@ public class Main {
 
         Collections.sort(caloriesList, Collections.reverseOrder());
         int sumOfTopThreeCalories = caloriesList.stream().limit(3).mapToInt(Integer::intValue).sum();
-
         System.out.println(sumOfTopThreeCalories);
     }
 }
